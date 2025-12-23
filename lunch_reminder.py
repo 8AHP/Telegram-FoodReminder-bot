@@ -6,6 +6,8 @@ from datetime import datetime
 import os
 
 TG_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
+SUBS_FILE = "/home/8HP/subscribers.json"
+API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}"
 
 # Previously present original logic and output messages for reminders
 def send_lunch_reminder():
