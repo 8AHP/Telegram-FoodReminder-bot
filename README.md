@@ -1,98 +1,129 @@
-# Telegram Food Reminder Bot
+# Telegram Lunch Reminder Bot
 
 ## Project Overview
-The **Telegram Food Reminder Bot** is your virtual assistant for keeping track of your perishable food items. This bot helps you reduce food waste by reminding you when your stored food items are nearing their expiration dates. Built to work seamlessly with Telegram, this bot makes managing your food inventory easy and accessible.
 
-## Features
-- **Add Food Items**: Allows users to add food items along with their expiration dates.
-- **Notifications**: Sends Telegram reminders before food items expire.
-- **Categorization**: Organize food items into categories like fruits, vegetables, dairy, etc.
-- **Edit/Delete Entries**: Update or remove items from your list as needed.
-- **Easy Setup**: Simple commands to interact with the bot.
-
-## Installation Steps
-Follow these steps to set up the bot:
-
-### Prerequisites
-1. **Python 3.x**: Ensure you have Python installed. You can download it from [python.org](https://www.python.org/).
-2. **Telegram Account**: Create a Telegram account if you don't already have one.
-3. **Bot Token**: Get a bot token from the [BotFather](https://core.telegram.org/bots#botfather) on Telegram.
-
-### Steps
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/8AHP/Telegram-FoodReminder-Bot.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd Telegram-FoodReminder-Bot
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Create a `.env` file in the project root directory, and add your bot token:
-   ```env
-   BOT_TOKEN=<Your_Telegram_Bot_Token>
-   ```
-5. Run the bot:
-   ```bash
-   python bot.py
-   ```
-
-The bot will now be running, and you can interact with it on Telegram by searching for your bot name.
-
-## Usage Instructions
-Here’s how you can use the bot:
-
-1. **Start the Bot:**
-   Send `/start` to initialize a session with the bot.
-
-2. **Add Food Items:**
-   Use the `/add` command and provide details about the food item, e.g.,
-   ```
-   /add Milk 2025-12-31
-   ```
-   This adds milk with an expiration date of December 31, 2025.
-
-3. **View Food List:**
-   Use the `/list` command to see all your tracked food items:
-   ```
-   /list
-   ```
-
-4. **Update an Item:**
-   Use the `/update` command with the item name and updated details:
-   ```
-   /update Milk 2025-12-25
-   ```
-
-5. **Delete an Item:**
-   Remove an item by using:
-   ```
-   /delete Milk
-   ```
-
-6. **Help:**
-   To see all available commands, send:
-   ```
-   /help
-   ```
-
-## Troubleshooting
-
-If you encounter any issues, here are some common solutions:
-
-- **Bot Not Responding**: Ensure the bot is running and your bot token is correct in the `.env` file.
-- **Dependency Errors**: Check if all required dependencies are installed by running:
-  ```bash
-  pip install -r requirements.txt
-  ```
-- **Permission Issues**: Ensure your Telegram account has access to the bot.
-- **Date Format Issues**: Always use `YYYY-MM-DD` for dates to avoid parsing errors.
-
-For further assistance, feel free to open an issue in the repository.
+The **Telegram Lunch Reminder Bot** is a simple Telegram-based automation tool designed to remind users to order their university lunch for the upcoming week. It runs daily and sends a reminder message **at 10:00 AM UTC+3:30 every Wednesday**, ensuring you and your group never miss the order deadline!
 
 ---
 
-Happy tracking! Reduce food waste and save money by keeping your kitchen organized with the Telegram Food Reminder Bot.
+## Features
+
+- 📅 **Weekly Reminder**: Sends a Telegram message at 10:00 AM (your local time: UTC+3:30) every Wednesday.
+- 🔗 **Telegram Bot API**: Built with secure communication, the bot interacts directly with Telegram's HTTP API.
+- 🔒 **Environment Configuration**: Tokens and file paths are configurable via `.env` files for deployment security.
+
+---
+
+## How It Works
+
+1. **Bot Automation**:
+   - The bot runs in the background on a server or task scheduler.
+   - It sends the **lunch reminder message** to all subscribed users weekly.
+   
+2. **Reminder Logic**:
+   - **Trigger Time**: The script triggers a notification every **Wednesday at 10:00 AM**.
+   - Reads from a list of subscribers stored in `subscribers.json`.
+   - Sends a message to all users in the list using Telegram’s Bot API.
+
+3. **Message Example**:
+    ```
+    🍽️ It's Wednesday! Time to order next week's lunch! 
+    Don't skip it, gang. Your future self will thank you 🙏.
+    ```
+
+---
+
+## Installation and Setup
+
+For setting up the Telegram Lunch Reminder Bot, follow these steps:
+
+### Prerequisites
+1. **Python 3.8+**: Ensure Python is installed on your system.
+2. **Bot Token**: Obtain a Telegram Bot Token using [BotFather](https://core.telegram.org/bots#botfather).
+3. **Server/Task Scheduler**: Deploy the script to a server or set it up as a cron job for scheduled execution.
+
+---
+
+### Steps to Install
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/8AHP/Telegram-FoodReminder-Bot.git
+   cd Telegram-FoodReminder-Bot
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set Up `.env` File**:
+   - Create a `.env` file by copying the provided `.env.example`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Update the `TG_BOT_TOKEN` variable with your bot token:
+     ```env
+     TG_BOT_TOKEN="your-telegram-bot-api-token"
+     ```
+
+4. **Subscribe Users**:
+   - Manually update the `subscribers.json` file or let users subscribe via a bot listener.
+
+5. **Schedule the Bot**:
+   - Use cron or task schedulers to execute `lunch_reminder.py` at 10:00 AM every Wednesday.
+   - Example for crontab:
+     ```bash
+     30 6 * * 3 python3 /path-to-bot/lunch_reminder.py
+     ```
+
+---
+
+## Environment Variables
+
+The bot uses an `.env` file for secure configuration:
+- **`TG_BOT_TOKEN`**: Telegram Bot Token
+- **`SUBS_FILE`**: Path to the JSON file where subscriber chat IDs are stored (default: `/home/8HP/subscribers.json`).
+
+### `.env Example`:
+```dotenv
+# Telegram Bot API token
+TG_BOT_TOKEN="your-bot-token-here"
+
+# Path to subscribers.json file
+SUBS_FILE="/path/to/subscribers.json"
+```
+
+---
+
+## File Overview
+
+### 1. `lunch_reminder.py`
+- Responsible for:
+  - Sending predefined reminder messages to all subscribers **only on Wednesday**.
+- Reads:
+  - `subscribers.json` for user IDs.
+  - `.env` for token configuration.
+
+### 2. `bot_listener.py`
+- Optional entry point for user-subscription handling (e.g., `/start` command).
+
+### 3. `.env` and `.env.example`
+- `.env`: Local configuration file (excluded from version control).
+- `.env.example`: Template for your `.env` file.
+
+### 4. `subscribers.json`
+- Stores user chat IDs for reminders.
+
+---
+
+## Support
+
+If you encounter issues:
+- Ensure the bot token in `.env` is correct and the bot is active.
+- Confirm that `subscribers.json` is read/write accessible by the bot.
+- Use a reliable task scheduler (like cron).
+
+---
+
+Stay fed, stay productive! 🍽️
