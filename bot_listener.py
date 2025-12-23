@@ -8,14 +8,13 @@ import os
 sys.path.append('/home/8HP')
 from telegram import Bot
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
-from secrets import TG_BOT_TOKEN
-
-API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}"
-SUBS_FILE = "/home/8HP/subscribers.json"
 
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")
 if not TG_BOT_TOKEN:
     raise EnvironmentError("'TG_BOT_TOKEN' environment variable is not set!")
+
+API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}"
+SUBS_FILE = os.environ.get("SUBS_FILE", "/home/8HP/subscribers.json")
 
 bot = Bot(token=TG_BOT_TOKEN)
 updater = Updater(bot=bot, use_context=True)
