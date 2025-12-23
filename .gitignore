@@ -1,4 +1,5 @@
 # Exclude sensitive and configuration files
+.env
 secrets.py
 subscribers.json
 recovery_*.txt
