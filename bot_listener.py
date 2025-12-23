@@ -9,9 +9,13 @@ sys.path.append('/home/8HP')
 from telegram import Bot
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")
+from dotenv import load_dotenv
+load_dotenv()  # Load variables from .env
+
+TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+# Ensure that the environment variable is set correctly
 if not TG_BOT_TOKEN:
-    raise EnvironmentError("'TG_BOT_TOKEN' environment variable is not set!")
+    raise ValueError("TG_BOT_TOKEN is missing. Check your .env file.")
 
 API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}"
 SUBS_FILE = os.environ.get("SUBS_FILE", "/home/8HP/subscribers.json")
