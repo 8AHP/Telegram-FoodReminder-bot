@@ -2,10 +2,18 @@
 import json
 import requests
 import sys
-from datetime import datetime
 import os
 
-TG_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
+from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()  # Load variables from .env
+
+TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+# Ensure that the environment variable is set correctly
+if not TG_BOT_TOKEN:
+    raise ValueError("TG_BOT_TOKEN is missing. Check your .env file.")
+
 SUBS_FILE = "/home/8HP/subscribers.json"
 API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}"
 
